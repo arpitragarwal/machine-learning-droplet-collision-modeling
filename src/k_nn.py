@@ -37,17 +37,27 @@ def k_nn(X_scaled, Y):
             neigh.fit(train_x, train_y)
             predicted_labels_knn2_dist[test] = neigh.predict(X_scaled[test, :])
 
+        if len(score_knn1_dist):
+            if (accuracy_score(predicted_labels_knn1_dist, Y) > max(score_knn1_dist)):
+                predicted_labels_knn1_dist_best = predicted_labels_knn1_dist
+                np.savetxt("../trained_models/predicted_labels_knn.csv",
+                           predicted_labels_knn1_dist, fmt='%i', delimiter=",")
+
         score_knn1 = np.append(score_knn1, accuracy_score(predicted_labels_knn1, Y))
         score_knn2 = np.append(score_knn2, accuracy_score(predicted_labels_knn2, Y))
         score_knn1_dist = np.append(score_knn1_dist, accuracy_score(predicted_labels_knn1_dist, Y))
         score_knn2_dist = np.append(score_knn2_dist, accuracy_score(predicted_labels_knn2_dist, Y))
 
+    np.savetxt("../trained_models/scores_knn1.csv", score_knn1, delimiter=",")
+    np.savetxt("../trained_models/scores_knn2.csv", score_knn2, delimiter=",")
+    np.savetxt("../trained_models/scores_knn1_dist.csv", score_knn1_dist, delimiter=",")
+    np.savetxt("../trained_models/scores_knn2_dist.csv", score_knn2_dist, delimiter=",")
+
     plt.plot(no_neighbors, score_knn1, '-o', label='L1, uniform')
     plt.plot(no_neighbors, score_knn2, '-o', label='L2, uniform')
     plt.plot(no_neighbors, score_knn1_dist, '--o', label='L1, distance')
     plt.plot(no_neighbors, score_knn2_dist, '--o', label='L2, distance')
-    #plt.axhline(y=np.mean(score_knn[1:]), color='k', linewidth=0.25)
-    plt.ylim(0.4, 1)
+    plt.ylim(0.6, 1)
     #plt.xlim(0, max(no_neighbors))
     plt.xscale("log")
     plt.grid()
@@ -58,4 +68,4 @@ def k_nn(X_scaled, Y):
     plt.savefig('../figures/accuracy_knn.png')
     plt.show()
 
-    return max(score_knn1_dist)
+    return max(score_knn1_dist), predicted_labels_knn1_dist_best

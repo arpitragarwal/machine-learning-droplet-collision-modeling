@@ -141,12 +141,66 @@ csvwrite(csv_filename, data_for_csv)
 
 
 %%
+close all
+kernel_val = 'on';
+save_figs = true;
+
 figure()
-scatterhist(feature_vals(:,1), feature_vals(:,2), 'Group', label_vals, 'Kernel','on', 'Marker','.','MarkerSize',10)
+scatterhist(feature_vals(:,1), feature_vals(:,2), 'Group', label_vals, 'Kernel', kernel_val, 'Marker','.','MarkerSize',10)
 legend('coalescence', 'bouncing', 'stretching', 'reflexive')
 xlabel('We')
 ylabel('B')
 % xlim([0 250])
 % ylim([0 1])
 grid on
-saveas(gcf, '../../figures/data_scatterhist.png')
+if save_figs
+    saveas(gcf, '../../figures/data_scatterhist.png')
+end
+
+figure()
+scatterhist(feature_vals(:,1), feature_vals(:,3), 'Group', label_vals, 'Kernel', kernel_val, 'Marker','.','MarkerSize',10)
+legend('coalescence', 'bouncing', 'stretching', 'reflexive')
+xlabel('We')
+ylabel('\Delta')
+% xlim([0 250])
+% ylim([0 1])
+grid on
+if save_figs
+    saveas(gcf, '../../figures/data_scatterhist1.png')
+end
+
+figure()
+scatterhist(feature_vals(:,1), feature_vals(:,4), 'Group', label_vals, 'Kernel', kernel_val, 'Marker','.','MarkerSize',10)
+legend('coalescence', 'bouncing', 'stretching', 'reflexive')
+xlabel('We')
+ylabel('P')
+% xlim([0 250])
+% ylim([0 1])
+grid on
+if save_figs
+    saveas(gcf, '../../figures/data_scatterhist2.png')
+end
+
+figure()
+scatterhist(feature_vals(:,1), feature_vals(:,5), 'Group', label_vals, 'Kernel', kernel_val, 'Marker','.','MarkerSize',10)
+legend('coalescence', 'bouncing', 'stretching', 'reflexive')
+xlabel('We')
+ylabel('\mu')
+% xlim([0 250])
+% ylim([0 1])
+grid on
+if save_figs
+    saveas(gcf, '../../figures/data_scatterhist3.png')
+end
+
+figure()
+scatterhist(feature_vals(:,5), feature_vals(:,2), 'Group', label_vals, 'Kernel', kernel_val, 'Marker','.','MarkerSize',10)
+legend('coalescence', 'bouncing', 'stretching', 'reflexive')
+ylabel('B')
+xlabel('\mu')
+% xlim([0 250])
+% ylim([0 1])
+grid on
+if save_figs
+    saveas(gcf, '../../figures/data_scatterhist4.png')
+end
