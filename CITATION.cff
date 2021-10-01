@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Agarwal
+    given-names: Arpit
+title: "Machine learning models for predition of droplet collision outcomes"
+version:
+doi: 
+date-released: 2021-09-30
