@@ -80,35 +80,35 @@
 \maketitle
 
 \begin{abstract}
-Predicting the outcome of liquid droplet collisions is an extensively studied phenomenon but the current physics based models for predicting the outcomes are poor (accuracy $\approx 43\%$). The key weakness of these models is their limited complexity. They only account for 3 features while there are many more relevant features that go unaccounted for. This limitation of traditional models can be easily overcome through machine learning modeling of the problem. In an ML setting this problem directly translates to a classification problem with 4 classes. Here we compile a large labelled dataset and tune different ML classifiers over this dataset. We evaluate the accuracy and robustness of the classifiers. ML classifiers, with accuracies over 90\%, significantly outperform the physics based models. Another key question we try to answer in this paper is whether existing knowledge of the physics based models can be exploited to boost the accuracy of the ML classifiers. We find that while this knowledge improves the accuracy slightly for small datasets, it is useless with larger datasets being available.
+Predicting the outcome of liquid droplet collisions is an extensively studied phenomenon but the current physics based models for predicting the outcomes are poor (accuracy $\approx 43\%$). The key weakness of these models is their limited complexity. They only account for 3 features while there are many more relevant features that go unaccounted for. This limitation of traditional models can be easily overcome through machine learning modeling of the problem. In an ML setting this problem directly translates to a classification problem with 4 classes. Here we compile a large labelled dataset and tune different ML classifiers over this dataset. We evaluate the accuracy and robustness of the classifiers. ML classifiers, with accuracies over 90\%, significantly outperform the physics based models. Another key question we try to answer in this paper is whether existing knowledge of the physics based models can be exploited to boost the accuracy of the ML classifiers. We find that while this knowledge improves the accuracy marginally for small datasets, it does not improve accuracy with if larger datasets are used for training the models.
 \end{abstract}
 
 \section{Introduction}
 \subsection{Motivation}
-Droplet collisions are important to the dynamics of a liquid spray. Sprays of engineering relevance have a very high droplet density and therefore a lot of droplet collisions. For example, diesel sprays have been reported to have 10$^8$ collisions per cm$^3$ per microsecond~\cite{macinnes1991comparisons}. Collisions have a direct effect on the liquid drops as they change the droplet sizes and velocities. Due to the high frequency of droplet collisions, and their cascading effect on the system dynamics, it is important to accurately model the droplet collision phenomena.
+Droplet collisions are important to the dynamics of a liquid spray. Sprays of engineering relevance (e.g., automotive, food processing, printing) have a very high droplet density and therefore a lot of droplet collisions. For example, diesel sprays have been reported to have 10$^8$ collisions per cm$^3$ per microsecond~\cite{macinnes1991comparisons}. Collisions have a direct effect on the liquid drops as they change the droplet sizes and velocities. Due to the high frequency of droplet collisions, and their cascading effect on the system dynamics, it is important to accurately model the droplet collision phenomena.
 
 The problem of modeling the outcome of droplet collisions has been worked on extensively by fluid dynamicists. The models proposed in literature for predicting the outcomes of droplet collisions are phenomenological. They are based simplified analyses of the governing fluid dynamics equations. \citet{agarwal2019computational} evaluate the current state of the art in physics based models and report an accuracy of around 64\% on the data they considered. On considering additional data reported by \citet{sommerfeld2016modelling} this accuracy drops to around 43\%. The complexity of these models is limited by our understanding of fluid mechanics, and our cognitive limitations. Models of higher complexity are needed to improve the accuracy.
 
 The problem of droplet collision prediction can be directly framed as a 4-class classification problem. This problem is ideal for a machine learning solution because of two reasons:
 \begin{enumerate}
-\item Ground truth complexity is high - beyond physical modeling
+\item Ground truth complexity is high and beyond physical modeling
 \item The problem is well studied, hence a lot of experimental data has been published over the years
 \end{enumerate}
-Here I compile labelled datasets from literature (7898 points in all, see table~\ref{tab:data}) and train machine learning classification models over this data. The entire dataset, source code for the different models and tests that appear in the paper, and all the figures are available on github~\cite{githubrepo}.
+Here I compile labelled datasets from literature (7898 points in all, see Table~\ref{tab:data}) and train machine learning classification models over this data. The entire dataset, source code for the different models and tests, and all the figures that appear in the paper are available on Github~\cite{githubrepo}.
 
 
 
 \subsection{Fluid Mechanics Background}
 \label{sec:background}
-Four main types of outcomes are expected from collisions of two droplets, these are illustrated in figure~\ref{fig:outcomes}. As this is a deterministic phenomenon, a priori prediction of collision outcomes is possible with enough information about the droplet and flow characteristics. Due to limitations of the techniques used, in current fluid mechanics literature, only three main non-dimensional quantities, $\Delta, We$ and $B$ are considered in the outcome of a binary collision. It is well known that more features are relevant, but no models exist that account for all relevant features.
+Four main types of outcomes are expected from collisions of two droplets, these are illustrated in Figure~\ref{fig:outcomes}. As this is a deterministic phenomenon, a priori prediction of collision outcomes is possible with enough information about the droplet and flow characteristics. Due to limitations of the techniques used in current fluid mechanics literature, only three main non-dimensional quantities, $\Delta, We$ and $B$ are considered in the outcome of a binary collision. It is well known that more features are relevant, but no models exist that account for all relevant features.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../figures/outcome-illustration.png}
-	\caption{An illustration of the 4 types of outcomes expected. These are the classification labels for the present study.}
+	\includegraphics[width=0.8\textwidth]{figures/outcome-illustration.png}
+	\caption{An illustration of the 4 types of outcomes expected - bouncing, coalescence, head-on separation (or reflexive separation), and off-center separation (or stretching separation). These are the classification labels for the present study.}
 	\label{fig:outcomes}
 \end{figure}
-As highlighed in fig.~\ref{fig:outcomes} the four class labels (collision outcomes) are:
+As highlighed in Figure~\ref{fig:outcomes} the four class labels (collision outcomes) are:
 \begin{enumerate}
 \item Coalescence
 \item Bouncing
@@ -124,14 +124,14 @@ As per the traditional modeling approach, the 3-dimensional feature space is div
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/munnannur.png}
+        \includegraphics[width=\textwidth]{figures/munnannur.png}
         \caption{A sample dataset with the 4 labels and the physics based classification curves}
         \label{fig:munnannur_a}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/regimes.png}
+        \includegraphics[width=\textwidth]{figures/regimes.png}
         \caption{Classification curves \& map for the physics based models. The four different colors correspond to the four different labels.}
         \label{fig:regime}
     \end{subfigure}
@@ -177,21 +177,21 @@ Data has been collected from four published articles. Details of the references 
 
 
 
-All the input features are numerical. The 5 base features and 3 additional features are described in table~\ref{tab:features}. A slice of the overall dataset showing variation along $We$, and $B$ is presented in Figure~\ref{fig:data0}. Spray droplet collisions are most studied in the context of fuel sprays, and in typical physical operating ranges, $We$ and $B$ are the most relevant features in the outcome of the droplet collision. The distribution of the datapoints along the $We$ and $B$ axis are presented alongside the scatterplot.
+All the input features are numerical. The 5 base features and 3 additional features are described in Table~\ref{tab:features}. A slice of the overall dataset showing variation along $We$, and $B$ is presented in Figure~\ref{fig:data0}. Spray droplet collisions are most studied in the context of fuel sprays, and in typical physical operating ranges, $We$ and $B$ are the most relevant features in the outcome of the droplet collision. The distribution of the datapoints along the $We$ and $B$ axis are presented alongside the scatterplot.
 
 \begin{table}[h]
-  \caption{Descriptions of the features}
+  \caption{Description of the features}
   \label{tab:features}
   \centering
   \begin{tabular}{l l c p{5cm}}
     \toprule
     & 							Features		  			& Range & Comments\\
     \midrule
-   \multirow{ 5}{*}{Base Features} 	& 1. $We$ (Weber number)      	& $\rm I\!R^+$ 	& See fig.~\ref{fig:data0}  \\
-     							& 2. $B$ (Impact param.)		& [0, 1]  			& See fig.~\ref{fig:data0} \\
-    							& 3. $\Delta$ (Drop size ratio)  	& [0, 1]  			& Most data has $\Delta = 1$; a few points with $\Delta = \{0.5, 0.75\}$ (see fig. \ref{fig:data1})   \\
-    							& 4. $P$ (Gas pressure) 		& $\rm I\!R^+$	&  Only discrete training data available (see fig.~\ref{fig:data2})\\
-    							& 5. $\mu$ (Liquid viscosity) 		& $\rm I\!R^+$ 	& Only discrete training data available (see fig.~\ref{fig:data3}) \\
+   \multirow{ 5}{*}{Base Features} 	& 1. $We$ (Weber number)      	& $\rm I\!R^+$ 	& See Figure~\ref{fig:data0}  \\
+     							& 2. $B$ (Impact param.)		& [0, 1]  			& See Figure~\ref{fig:data0} \\
+    							& 3. $\Delta$ (Drop size ratio)  	& [0, 1]  			& Most data has $\Delta = 1$; a few points with $\Delta = \{0.5, 0.75\}$ (see Figure~\ref{fig:data1})   \\
+    							& 4. $P$ (Gas pressure) 		& $\rm I\!R^+$	&  Only discrete training data available (see Figure~\ref{fig:data2})\\
+    							& 5. $\mu$ (Liquid viscosity) 		& $\rm I\!R^+$ 	& Only discrete training data available (see Figure~\ref{fig:data3}) \\
    \midrule
    \multirow{ 3}{3cm}{Additional Features (combinations of base features)} 	& Curve $C_1$     			& $\rm I\!R$ &  see eq.~\ref{eq:c1}\\
      							& Curve $C_2$					& $\rm I\!R$  & see eq.~\ref{eq:c2} \\
@@ -203,7 +203,7 @@ All the input features are numerical. The 5 base features and 3 additional featu
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{../figures/data_scatterhist.png}
+	\includegraphics[width=0.7\textwidth]{figures/data_scatterhist.png}
 	\caption{Overall droplet collision dataset (N = 7898, details in Table~\ref{tab:data}), showing variation in collision outcomes with respect to $We$ and $B$ (features 1 and 2).}
 	\label{fig:data0}
 \end{figure}
@@ -213,28 +213,28 @@ All the input features are numerical. The 5 base features and 3 additional featu
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{../figures/data_scatterhist1.png}
+        \includegraphics[width=\textwidth]{figures/data_scatterhist1.png}
         \caption{\centering Collision outcomes with respect to $\Delta$ and $We$ (features 1 and 3)}
         \label{fig:data1}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{../figures/data_scatterhist2.png}
+        \includegraphics[width=\textwidth]{figures/data_scatterhist2.png}
         \caption{\centering Collision outcomes with respect to $P$ and $We$ (features 1 and 4)}
         \label{fig:data2}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{../figures/data_scatterhist3.png}
+        \includegraphics[width=\textwidth]{figures/data_scatterhist3.png}
         \caption{\centering Collision outcomes with respect to $\mu$ and $We$ (features 1 and 5)}
         \label{fig:data3}
     \end{subfigure}
         ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{../figures/data_scatterhist4.png}
+        \includegraphics[width=\textwidth]{figures/data_scatterhist4.png}
         \caption{\centering Collision outcomes with respect to $B$ and $\mu$ (features 5 and 2)}
         \label{fig:data4}
     \end{subfigure}
@@ -257,13 +257,13 @@ The 3 decision curves that form the physics based models \cite{munnannur2007new}
 C_3: B - \sqrt{\frac{2.4(\Delta^3- 2.4 \Delta^2 + 2.7\Delta)}{We}}
 \end{equation}
 
-These curves divide the feature space or the physical input space into separate regions, and depending on where the datapoint lies with respect to these curves, the physics based models assign the outcome (see Figure \ref{fig:regime}). Here we incorporate these 3 decision curves as features into our model. $C_1$, $C_2$ and $C_3$ are the additional features formed through combinations of the base features. 
+These curves divide the feature space or the physical input space into separate regions, and depending on where the datapoint lies with respect to these curves, the physics based models assign the outcome (see Figure~\ref{fig:regime}). Here we incorporate these 3 decision curves as features into our model. $C_1$, $C_2$ and $C_3$ are the additional features formed through combinations of the base features. 
 
 \subsection{Gaps in the data set}
-The traditional physics based models only consider 3 features ($\Delta, We$, $B$), therefore, in reporting the data some authors do not report values for the other two features ($P, \mu$) considered here. To fill the gaps I have made educated guesses (based on the description of the setup and the fluid used) of those features. Furthermore, \citet{qian1997regimes} do not distinguish between classes 3 and 4, and report them as the same. Here, again, I have made educated guesses for their labels based on where the datapoints lie in the regime map (Figure~\ref{fig:regime}).
+The traditional physics based models only consider 3 features ($\Delta, We$, $B$), therefore, in reporting the data some authors do not report values for the other two features ($P, \mu$) considered here. To fill the gaps I have made educated guesses based on the description of the setup and the fluid used of those features. Furthermore, \citet{qian1997regimes} do not distinguish between classes 3 and 4, and report them as the same. Here, again, I have made educated guesses for their labels based on where the datapoints lie in the regime map (Figure~\ref{fig:regime}).
 
 \section{Machine Learning Modeling}
-Scikit-learn \cite{scikit_learn} and numpy are the two main libraries used through this work. All the machine learning model implementations are used directly from scikit-learn. As part of preprocessing, the dataset is shuffled randomly and the feature values are standardized (scaled  to a mean of 0 and standard deviation of 1). Throughout the paper, ten-fold cross validation results have been reported.
+Scikit-learn~\cite{scikit_learn} and numpy~\cite{harris2020array} are the two main libraries used through this work. All the machine learning model implementations are used directly from scikit-learn. As part of preprocessing, the dataset is shuffled randomly and the feature values are standardized (scaled  to a mean of 0 and standard deviation of 1). Throughout the paper, ten-fold cross validation results have been reported.
 
 \subsection{Hyperparameter tuning}
 \label{sec:tuning}
@@ -276,22 +276,22 @@ In this section we tune hyperparameters for a few non-linear classifiers. For ea
 \subsubsection{Decision Trees}
 Here we test two different splitting criterions over different values of maximum tree depth. A few observations can be made:
 \begin{itemize}
-\item When tree depth is short (< 5), the 3 additional features significantly improve the prediction accuracy. The extra features play a diminishing role in accuracy as the trees get deeper. The accuracy values for both the cases (fig. \ref{fig:dt_wo} and fig. \ref{fig:dt_w}) saturate around 0.93.
+\item When tree depth is short (< 5), the 3 additional features significantly improve the prediction accuracy. The extra features play a diminishing role in accuracy as the trees get deeper. The accuracy values for both the cases (Figure~\ref{fig:dt_wo} and Figure~\ref{fig:dt_w}) saturate around 0.93.
 \item Choice of splitting criterion (gini impurity vs. entropy) has little effect on accuracy across all tests. The accuracy from both criteria remains roughly the same across tree depths and in 5 features vs. 8.
-\item Accuracy saturates beyond max tree depth of around 20. This value remains similar with 5 input features and 8 input features. This is confirmed in experiments with random forests as well (see figure~\ref{fig:rf}).
+\item Accuracy saturates beyond max tree depth of around 20. This value remains similar with 5 input features and 8 input features. This is confirmed in experiments with random forests as well (see Figure~\ref{fig:rf}).
 \end{itemize}
 
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/wo_domain_knowledge/accuracy_decision_tree.png}
+        \includegraphics[width=\textwidth]{figures/wo_domain_knowledge/accuracy_decision_tree.png}
         \caption{Without domain knowledge (5  features)}
         \label{fig:dt_wo}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/w_domain_knowledge/accuracy_decision_tree.png}
+        \includegraphics[width=\textwidth]{figures/w_domain_knowledge/accuracy_decision_tree.png}
         \caption{With domain knowledge (8  features)}
         \label{fig:dt_w}
     \end{subfigure}
@@ -306,21 +306,21 @@ Here we test two different splitting criterions over different values of maximum
 Here we test accuracy vs. the number of estimators used. We do this for two different values of max tree depth. This is repeated with both cases, one with 5 features and one with the 3 extra features. A few observations can be made from these tests:
 \begin{itemize}
 \item The accuracy values are fairly high (close to 0.95 for high number of estimators).
-\item The extra features have no impact on the accuracy. Even for a small number of estimators. This makes sense considering the results seen in figure~\ref{fig:dt}. The accuracy of decision trees was not affected by the 3 additional features beyond a tree depth of 16. Here we consider tree depths of 16 and 32, therefore, even with 1 estimator, the accuracy values are not affected by the additional features.
+\item The extra features have no impact on the accuracy. Even for a small number of estimators. This makes sense considering the results seen in Figure~\ref{fig:dt}. The accuracy of decision trees was not affected by the 3 additional features beyond a tree depth of 16. Here we consider tree depths of 16 and 32, therefore, even with 1 estimator, the accuracy values are not affected by the additional features.
 \item The maximum tree depth values (beyond 16) has no impact on accuracy of the random forests.
 \item The accuracy value is practically saturated beyond 30 estimators for all cases.
 \end{itemize}
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/wo_domain_knowledge/accuracy_rand_forests.png}
+        \includegraphics[width=\textwidth]{figures/wo_domain_knowledge/accuracy_rand_forests.png}
         \caption{Without domain knowledge (5  features)}
         \label{fig:rf_wo}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/w_domain_knowledge/accuracy_rand_forests.png}
+        \includegraphics[width=\textwidth]{figures/w_domain_knowledge/accuracy_rand_forests.png}
         \caption{With domain knowledge (8  features)}
         \label{fig:rf_w}
     \end{subfigure}
@@ -333,14 +333,14 @@ Here we experiment with different distance metrics ($L_1$ and $L_2$) and differe
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/wo_domain_knowledge/accuracy_knn.png}
+        \includegraphics[width=\textwidth]{figures/wo_domain_knowledge/accuracy_knn.png}
         \caption{Without domain knowledge (5  features)}
         \label{fig:gull}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/w_domain_knowledge/accuracy_knn.png}
+        \includegraphics[width=\textwidth]{figures/w_domain_knowledge/accuracy_knn.png}
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
@@ -363,14 +363,14 @@ Here we consider the accuracy of neural network classifiers as a function of num
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/wo_domain_knowledge/accuracy_neural_nets.png}
+        \includegraphics[width=\textwidth]{figures/wo_domain_knowledge/accuracy_neural_nets.png}
         \caption{Without domain knowledge (5  features)}
         \label{fig:gull}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/w_domain_knowledge/accuracy_neural_nets.png}
+        \includegraphics[width=\textwidth]{figures/w_domain_knowledge/accuracy_neural_nets.png}
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
@@ -378,19 +378,19 @@ Here we consider the accuracy of neural network classifiers as a function of num
 \end{figure}
 
 \subsection{Accuracy with tuned models}
-In this section we compare the accuracy of different machine learning models (with tuned hyperparameters based on prior sections) for the two cases,  one with the 5 base features and the other with the additional features. The results are presented in Figure~\ref{fig:tuned}. The accuracy of the state of the art physics based models~\cite{agarwal2019computational} is also presented (in red) as a baseline. The `ensemble' method refers to a majority vote of the random forest, neural network, SVM and k-NN predictions. 
+In this section we compare the accuracy of different machine learning models (with tuned hyperparameters based on prior section) for the two cases,  one with the 5 base features and the other with the additional features. The results are presented in Figure~\ref{fig:tuned}. The accuracy of the state of the art physics based models~\cite{agarwal2019computational} is also presented (in red) as a baseline. The `ensemble' method refers to a majority vote of the random forest, neural network, SVM and k-NN predictions. 
 
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/wo_domain_knowledge/accuracy_compilation.png}
+        \includegraphics[width=\textwidth]{figures/wo_domain_knowledge/accuracy_compilation.png}
         \caption{Without domain knowledge (5  features)}
         \label{fig:gull}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{../figures/w_domain_knowledge/accuracy_compilation.png}
+        \includegraphics[width=\textwidth]{figures/w_domain_knowledge/accuracy_compilation.png}
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
@@ -410,8 +410,8 @@ A few comments and observations regarding the results:
 The normalized confusion matrix, showing the predicted labels vs. the true lables, for the random forest classifier is presented in Figure~\ref{fig:conf} as a sample. The random forest classifier is picked because it has the highest accuracy. The accuracy is fairly high for the first 3 classes. The highest error is when the true label is `reflexive' and it gets classified as `coalescence'. More training data near this boundary can help boost the model accuracy further. This can possibly guide further experiments.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{../figures/conf_mat.png}
-	\caption{Confusion matrix for the random forest classifier.}
+	\includegraphics[width=0.6\textwidth]{figures/conf_mat.png}
+	\caption{Normalized confusion matrix for the random forest classifier.}
 	\label{fig:conf}
 \end{figure}
 
@@ -422,14 +422,14 @@ A key question that arises from the experiments presented so far is why the doma
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.475\textwidth}
-        \includegraphics[width=\textwidth]{../figures/accuracy_vs_size.png}
+        \includegraphics[width=\textwidth]{figures/accuracy_vs_size.png}
         \caption{Over the whole range of dataset sizes}
         \label{fig:acc_vs_size_a}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.475\textwidth}
-        \includegraphics[width=\textwidth]{../figures/accuracy_vs_size2.png}
+        \includegraphics[width=\textwidth]{figures/accuracy_vs_size2.png}
         \caption{For small dataset sizes (zoomed into Figure~\ref{fig:acc_vs_size_a})}
         \label{fig:acc_vs_size_b}
     \end{subfigure}
@@ -457,7 +457,7 @@ where $N \sim \mathcal{N}(0, n)$, $i$ is the instance index and $j$ is the featu
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{../figures/accuracy_with_noise.png}
+	\includegraphics[width=0.7\textwidth]{figures/accuracy_with_noise.png}
 	\caption{Accuracy of different classifiers as a function of noise in the data. The $n$ value denotes the standard deviation in the Gaussian noise. }
 	\label{fig:noise}
 \end{figure}
