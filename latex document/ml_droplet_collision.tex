@@ -34,7 +34,7 @@
 \setlist[enumerate]{itemsep=0mm}
 \setlist[itemize]{itemsep=0mm}
 
-\title{Data driven prediction of droplet collision outcomes}
+\title{Machine learning models for prediction of droplet collision outcomes}
 
 % The \author macro works with any number of authors. There are two
 % commands used to separate the names and addresses of multiple
@@ -47,10 +47,10 @@
 % author name.
 
 \author{
-  Arpit Agarwal\thanks{I worked alone towards this project. I explained my reasons in the project proposal.} \\
+  Arpit Agarwal \\
   %Department of Mechanical Engineering\\
   %University of Wisconsin -- Madison\\
-  \texttt{agarwal32@wisc.edu} \\
+  \texttt{arpit.r.agarwal@gmail.com} \\
   %% examples of more authors
   %% \And
   %% Coauthor \\
@@ -85,16 +85,16 @@ Predicting the outcome of liquid droplet collisions is an extensively studied ph
 
 \section{Introduction}
 \subsection{Motivation}
-Droplet collisions are important to the dynamics of a liquid spray. Sprays of engineering relevance have a very high droplet density and therefore a lot of droplet collisions. For example, diesel sprays have been reported to have 10$^8$  collisions per cm$^3$ per microsecond. Collisions have a direct effect on the liquid drops as they change the droplet sizes and velocities. Due to the high frequency of droplet collisions, and their cascading effect on the system dynamics, it is important to accurately model the droplet collision phenomena.
+Droplet collisions are important to the dynamics of a liquid spray. Sprays of engineering relevance have a very high droplet density and therefore a lot of droplet collisions. For example, diesel sprays have been reported to have 10$^8$ collisions per cm$^3$ per microsecond~\cite{macinnes1991comparisons}. Collisions have a direct effect on the liquid drops as they change the droplet sizes and velocities. Due to the high frequency of droplet collisions, and their cascading effect on the system dynamics, it is important to accurately model the droplet collision phenomena.
 
-The problem of modeling the outcome of droplet collisions has been worked on extensively by fluid dynamicists. The models proposed in literature for predicting the outcomes of droplet collisions are phenomenological. They are based simplified analyses of the governing fluid dynamics equations. \citet{evaluating_collision} evaluate the current state of the art in physics based models and report an accuracy of around 64\% on the data they considered. On considering additional data reported by \citet{sommerfeld2016modelling} this accuracy drops to around 43\%. The complexity of these models is limited by our understanding of fluid mechanics, and our cognitive limitations. Models of higher complexity are needed to improve the accuracy.
+The problem of modeling the outcome of droplet collisions has been worked on extensively by fluid dynamicists. The models proposed in literature for predicting the outcomes of droplet collisions are phenomenological. They are based simplified analyses of the governing fluid dynamics equations. \citet{agarwal2019computational} evaluate the current state of the art in physics based models and report an accuracy of around 64\% on the data they considered. On considering additional data reported by \citet{sommerfeld2016modelling} this accuracy drops to around 43\%. The complexity of these models is limited by our understanding of fluid mechanics, and our cognitive limitations. Models of higher complexity are needed to improve the accuracy.
 
 The problem of droplet collision prediction can be directly framed as a 4-class classification problem. This problem is ideal for a machine learning solution because of two reasons:
 \begin{enumerate}
 \item Ground truth complexity is high - beyond physical modeling
 \item The problem is well studied, hence a lot of experimental data has been published over the years
 \end{enumerate}
-Here I compile labelled datasets from literature (7898 points in all, see table~\ref{tab:data}) and train machine learning classification models over this data. 
+Here I compile labelled datasets from literature (7898 points in all, see table~\ref{tab:data}) and train machine learning classification models over this data. The entire dataset, source code for the different models and tests that appear in the paper, and all the figures are available on github~\cite{githubrepo}.
 
 
 
@@ -135,7 +135,7 @@ As per the traditional modeling approach, the 3-dimensional feature space is div
         \caption{Classification curves \& map for the physics based models. The four different colors correspond to the four different labels.}
         \label{fig:regime}
     \end{subfigure}
-    \caption{A sample dataset \cite{munnannur2007new} and the physics based classification map \cite{evaluating_collision}.}
+    \caption{A sample dataset by \citet{munnannur2007new} and the physics based classification map by \citet{agarwal2019computational}.}
     \label{fig:munnannur}
 \end{figure}
 
@@ -177,7 +177,7 @@ Data has been collected from four published articles. Details of the references 
 
 
 
-All the input features are numerical. The 5 base features and 3 additional features are described in table~\ref{tab:features}. 
+All the input features are numerical. The 5 base features and 3 additional features are described in table~\ref{tab:features}. A slice of the overall dataset showing variation along $We$, and $B$ is presented in Figure~\ref{fig:data0}. Spray droplet collisions are most studied in the context of fuel sprays, and in typical physical operating ranges, $We$ and $B$ are the most relevant features in the outcome of the droplet collision. The distribution of the datapoints along the $We$ and $B$ axis are presented alongside the scatterplot.
 
 \begin{table}[h]
   \caption{Descriptions of the features}
@@ -187,11 +187,11 @@ All the input features are numerical. The 5 base features and 3 additional featu
     \toprule
     & 							Features		  			& Range & Comments\\
     \midrule
-   \multirow{ 5}{*}{Base Features} 	& $We$ (Weber number)      	& $\rm I\!R^+$ 	& See fig.~\ref{fig:data0}  \\
-     							& $B$ (Impact param.)		& [0, 1]  			& See fig.~\ref{fig:data0} \\
-    							& $\Delta$ (Drop size ratio)  	& [0, 1]  			& Most data has $\Delta = 1$; a few points with $\Delta = \{0.5, 0.75\}$ (see fig. \ref{fig:data1})   \\
-    							& $P$ (Gas pressure) 		& $\rm I\!R^+$	&  Only discrete training data available (see fig.~\ref{fig:data2})\\
-    							& $\mu$ (Liquid viscosity) 		& $\rm I\!R^+$ 	& Only discrete training data available (see fig.~\ref{fig:data3}) \\
+   \multirow{ 5}{*}{Base Features} 	& 1. $We$ (Weber number)      	& $\rm I\!R^+$ 	& See fig.~\ref{fig:data0}  \\
+     							& 2. $B$ (Impact param.)		& [0, 1]  			& See fig.~\ref{fig:data0} \\
+    							& 3. $\Delta$ (Drop size ratio)  	& [0, 1]  			& Most data has $\Delta = 1$; a few points with $\Delta = \{0.5, 0.75\}$ (see fig. \ref{fig:data1})   \\
+    							& 4. $P$ (Gas pressure) 		& $\rm I\!R^+$	&  Only discrete training data available (see fig.~\ref{fig:data2})\\
+    							& 5. $\mu$ (Liquid viscosity) 		& $\rm I\!R^+$ 	& Only discrete training data available (see fig.~\ref{fig:data3}) \\
    \midrule
    \multirow{ 3}{3cm}{Additional Features (combinations of base features)} 	& Curve $C_1$     			& $\rm I\!R$ &  see eq.~\ref{eq:c1}\\
      							& Curve $C_2$					& $\rm I\!R$  & see eq.~\ref{eq:c2} \\
@@ -204,44 +204,46 @@ All the input features are numerical. The 5 base features and 3 additional featu
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\textwidth]{../figures/data_scatterhist.png}
-	\caption{Data}
+	\caption{Overall droplet collision dataset (N = 7898, details in Table~\ref{tab:data}), showing variation in collision outcomes with respect to $We$ and $B$ (features 1 and 2).}
 	\label{fig:data0}
 \end{figure}
+
+
 
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{../figures/data_scatterhist1.png}
-        \caption{Map w.r.t. features 1 and 3 }
+        \caption{\centering Collision outcomes with respect to $\Delta$ and $We$ (features 1 and 3)}
         \label{fig:data1}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{../figures/data_scatterhist2.png}
-        \caption{Map w.r.t. features 1 and 4 }
+        \caption{\centering Collision outcomes with respect to $P$ and $We$ (features 1 and 4)}
         \label{fig:data2}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{../figures/data_scatterhist3.png}
-        \caption{Map w.r.t. features 1 and 5 }
+        \caption{\centering Collision outcomes with respect to $\mu$ and $We$ (features 1 and 5)}
         \label{fig:data3}
     \end{subfigure}
         ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{../figures/data_scatterhist4.png}
-        \caption{Map w.r.t. features 5 and 2 }
+        \caption{\centering Collision outcomes with respect to $B$ and $\mu$ (features 5 and 2)}
         \label{fig:data4}
     \end{subfigure}
-    \caption{Different maps of the dataset}\label{fig:animals}
+    	\caption{Overall droplet collision dataset (N = 7898, details in Table~\ref{tab:data}), showing variation in collision outcomes with respect to the different features listed in Table~\ref{tab:features}.} \label{fig:animals}
 \end{figure}
 
 \subsection{Incorporating domain knowledge}
-Additional features formed through combinations of base features.
-Decision curve in physics based models \cite{munnannur2007new} (see figure \ref{fig:regime}) incorporated as features as shown here :
+The 3 decision curves that form the physics based models \cite{munnannur2007new} are given below:
+
 \begin{equation}
 \label{eq:c1}
  C_1 = We - \frac{\Delta(1+\Delta^2)(4\Phi - 12)}{\chi_1\left[ \cos\left( \sin^{-1}B\right) \right]}
@@ -255,29 +257,27 @@ Decision curve in physics based models \cite{munnannur2007new} (see figure \ref{
 C_3: B - \sqrt{\frac{2.4(\Delta^3- 2.4 \Delta^2 + 2.7\Delta)}{We}}
 \end{equation}
 
-Three such decision curves form the physics based model.
+These curves divide the feature space or the physical input space into separate regions, and depending on where the datapoint lies with respect to these curves, the physics based models assign the outcome (see Figure \ref{fig:regime}). Here we incorporate these 3 decision curves as features into our model. $C_1$, $C_2$ and $C_3$ are the additional features formed through combinations of the base features. 
 
 \subsection{Gaps in the data set}
-The traditional physics based models only consider 3 features ($\Delta, We$, $B$), therefore, in reporting the data some authors do not report values for the other two features ($P, \mu$) considered here. To fill the gaps I have made educated guesses of those features. Furthermore, \citet{qian1997regimes} do not distinguish between classes 3 and 4, and report them as the same. Here, again, I have made educated guesses for their labels.
+The traditional physics based models only consider 3 features ($\Delta, We$, $B$), therefore, in reporting the data some authors do not report values for the other two features ($P, \mu$) considered here. To fill the gaps I have made educated guesses (based on the description of the setup and the fluid used) of those features. Furthermore, \citet{qian1997regimes} do not distinguish between classes 3 and 4, and report them as the same. Here, again, I have made educated guesses for their labels based on where the datapoints lie in the regime map (Figure~\ref{fig:regime}).
 
 \section{Machine Learning Modeling}
-Scikit-learn \cite{scikit_learn} and numpy are the two main libraries used through this work. All the machine learning model implementations are used directly from scikit-learn. As part of preprocessing the dataset is shuffled randomly and the feature values are standardized (scaled  to a mean of 0 and standard deviation of 1). \textbf{Ten fold cross validation results have been reported throughout the paper}.
-
-%Section~\ref{sec:tuning} describes the hyperparameter tuning.\\
+Scikit-learn \cite{scikit_learn} and numpy are the two main libraries used through this work. All the machine learning model implementations are used directly from scikit-learn. As part of preprocessing, the dataset is shuffled randomly and the feature values are standardized (scaled  to a mean of 0 and standard deviation of 1). Throughout the paper, ten-fold cross validation results have been reported.
 
 \subsection{Hyperparameter tuning}
 \label{sec:tuning}
 In this section we tune hyperparameters for a few non-linear classifiers. For each of the classifiers, we consider two settings:
 \begin{enumerate} 
-\item Simply use the 5 base features, i.e. no domain knowledge used
-\item Use the 3 extra features, i.e. leverage domain knowledge
+\item Simply use the 5 base features, i.e., no domain knowledge used
+\item Use a total of 8 features (5 base + 3 extra), i.e., leverage domain knowledge
 \end{enumerate}
 
 \subsubsection{Decision Trees}
 Here we test two different splitting criterions over different values of maximum tree depth. A few observations can be made:
 \begin{itemize}
-\item The 3 additional features help significantly when the trees are very short. The extra features play a diminishing role in accuracy as the trees get deeper. The accuracy values for both the cases (fig. \ref{fig:dt_wo} and fig. \ref{fig:dt_w}) saturate around 0.93.
-\item Choice of splitting criterion (gini impurity vs. entropy) has little effect on accuracy.
+\item When tree depth is short (< 5), the 3 additional features significantly improve the prediction accuracy. The extra features play a diminishing role in accuracy as the trees get deeper. The accuracy values for both the cases (fig. \ref{fig:dt_wo} and fig. \ref{fig:dt_w}) saturate around 0.93.
+\item Choice of splitting criterion (gini impurity vs. entropy) has little effect on accuracy across all tests. The accuracy from both criteria remains roughly the same across tree depths and in 5 features vs. 8.
 \item Accuracy saturates beyond max tree depth of around 20. This value remains similar with 5 input features and 8 input features. This is confirmed in experiments with random forests as well (see figure~\ref{fig:rf}).
 \end{itemize}
 
@@ -295,7 +295,7 @@ Here we test two different splitting criterions over different values of maximum
         \caption{With domain knowledge (8  features)}
         \label{fig:dt_w}
     \end{subfigure}
-    \caption{Cross-validation accuracy with decision trees}
+    \caption{Model prediction accuracy (10-fold cross-validation tests) with decision trees}
     \label{fig:dt}
 \end{figure}
 
@@ -303,7 +303,7 @@ Here we test two different splitting criterions over different values of maximum
 
 \subsubsection{Random Forests}
 
-Here we test accuracy vs. the number of estimators used. We do this for two different values of max tree depth. This is repeated with both cases, one with 5 features and one with the extra features. A few observations can be made from these tests:
+Here we test accuracy vs. the number of estimators used. We do this for two different values of max tree depth. This is repeated with both cases, one with 5 features and one with the 3 extra features. A few observations can be made from these tests:
 \begin{itemize}
 \item The accuracy values are fairly high (close to 0.95 for high number of estimators).
 \item The extra features have no impact on the accuracy. Even for a small number of estimators. This makes sense considering the results seen in figure~\ref{fig:dt}. The accuracy of decision trees was not affected by the 3 additional features beyond a tree depth of 16. Here we consider tree depths of 16 and 32, therefore, even with 1 estimator, the accuracy values are not affected by the additional features.
@@ -324,18 +324,11 @@ Here we test accuracy vs. the number of estimators used. We do this for two diff
         \caption{With domain knowledge (8  features)}
         \label{fig:rf_w}
     \end{subfigure}
-    \caption{Cross-validation accuracy with random forests}\label{fig:rf}
+    \caption{Model prediction accuracy (10-fold cross-validation tests) with random forests}\label{fig:rf}
 \end{figure}
 
 \subsubsection{K-Nearest Neighbors}
-Here we experiment with different distance metrics ($L_1$ and $L_2$) and different label computation options (uniform and distance weighted averaging). These experiments are repeated with the 5 base features and with all the 8 features. Here are a few observations based on results in fig.~\ref{fig:knn}:
-\begin{itemize}
-\item Insignificant difference in accuracy when the additional features are considered.
-\item Label calculation method directly impacts accuracy. With $k=1$, we have a single neighbor, therefore the distance weighted label coincides with the direct computation. 
-\item As the $k$ value increases the uniformly weighted label accuracy drops quickly. $k=1$ is the optimal value for uniform weighing. This makes sense when we consider the data in fig.~\ref{fig:data0}. There is no gap between the different classes, moreover, there is some mixing of the classes as well. Therefore higher $k$ values pollute the labels.
-\item This issue is remedied in the distance weighted labels, where closer points are weighted higher. Here we observe a small increase in accuracy with increasing $k$ values up to $k=30$.
-\item Finally, the the $L_1$ and $L_2$ distance metrics have little impact on the accuracy.
-\end{itemize}
+Here we experiment with different distance metrics ($L_1$ and $L_2$) and different label computation options (uniform and distance weighted averaging). These experiments are repeated for both cases, with the 5 base features and with all the 8 features. Results are presented in Figure~\ref{fig:knn}.
 
 \begin{figure}[h!]
     \centering
@@ -351,11 +344,21 @@ Here we experiment with different distance metrics ($L_1$ and $L_2$) and differe
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
-    \caption{Cross-validation accuracy with k-nn}\label{fig:knn}
+    \caption{Model prediction accuracy (10-fold cross-validation tests) with k-nn}\label{fig:knn}
 \end{figure}
 
+Here are a few observations based on results in Figure~\ref{fig:knn}:
+\begin{itemize}
+\item The 3 additional features provide an insignificant improvement in the prediction accuracy.
+\item Label calculation method directly impacts accuracy.
+\subitem With $k=1$, we have a single neighbor, therefore the distance weighted label coincides with the direct computation. 
+\subitem As the $k$ value increases the uniformly weighted label accuracy drops quickly. $k=1$ is the optimal value for uniform weighing. This makes sense when we consider the data in Figure~\ref{fig:data0}. There is no gap between the different classes, moreover, there is some mixing of the classes as well. Therefore higher $k$ values pollute the labels.
+\subitem This issue is remedied in the distance weighted labels, where closer points are weighted higher. Here we observe a small increase in accuracy with increasing $k$ values up to $k=30$.
+\item Finally, the the $L_1$ and $L_2$ distance metrics have little impact on the accuracy.
+\end{itemize}
+
 \subsubsection{Neural Networks}
-Here we consider the accuracy of neural network classifiers as a function of number of training epochs/iterations. We tested out different neural network architectures (different number of hidden layers and neurons per layer) but they performed similarly with 2 or more hidden layers with more than 10 neurons each. In figure \ref{fig:nn} we present results with a 5 hidden layers, first four have 40 neurons and the last one has 8 neurons. Once again we see that the additional features have little impact on the accuracy. Also, the accuracy saturates beyond 300 iterations.
+Here we consider the accuracy of neural network classifiers as a function of number of training epochs/iterations. We tested different neural network architectures (different number of hidden layers and neurons per layer) but they performed similarly with 2 or more hidden layers with more than 10 neurons each. In Figure \ref{fig:nn} we present results with a 5 hidden layers, first four have 40 neurons and the last one has 8 neurons. Once again we see that the additional features have little impact on the accuracy. Also, the accuracy saturates beyond 300 iterations.
 
 \begin{figure}[h!]
     \centering
@@ -371,17 +374,11 @@ Here we consider the accuracy of neural network classifiers as a function of num
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
-    \caption{Cross-validation accuracy with Neural Networks}\label{fig:nn}
+    \caption{Model prediction accuracy (10-fold cross-validation tests) with Neural Networks}\label{fig:nn}
 \end{figure}
 
 \subsection{Accuracy with tuned models}
-In this section we compare the accuracy of different models (with tuned hyperparameters) for the two cases (one with the 5 base features and the other with the additional features). The results are presented in fig.~\ref{fig:tuned}. The accuracy of the state of the art physics based models is also presented (in red) as a baseline. A few comments and observations regarding the results:
-\begin{itemize}
-\item Even the simplest ML models provide a significant improvement over the current state of the art physics based models. This is related to the low model complexity in the physics based models.
-\item Little difference in the accuracy in the two cases. This is consistent with our observations in figures~\ref{fig:dt}--\ref{fig:nn}. The naive bayes classifier actually suffers with the additional features.
-\item The random forest classifier performs the best on this dataset. Although it is only marginally better than the much simpler decision tree and k-nn classifiers.
-\item The `ensemble' here refers to a majority vote of the random forest, neural network, SVM and k-NN predictions. This ensemble classifier does not boost the accuracy. An ensemble is expected to improve accuracy when the different classifiers exploit different aspects of the dataset.
-\end{itemize}
+In this section we compare the accuracy of different machine learning models (with tuned hyperparameters based on prior sections) for the two cases,  one with the 5 base features and the other with the additional features. The results are presented in Figure~\ref{fig:tuned}. The accuracy of the state of the art physics based models~\cite{agarwal2019computational} is also presented (in red) as a baseline. The `ensemble' method refers to a majority vote of the random forest, neural network, SVM and k-NN predictions. 
 
 \begin{figure}[h!]
     \centering
@@ -397,55 +394,66 @@ In this section we compare the accuracy of different models (with tuned hyperpar
         \caption{With domain knowledge (8  features)}
         \label{fig:tiger}
     \end{subfigure}
-    \caption{Cross-validation accuracy with different models}\label{fig:tuned}
+    \caption{Model prediction accuracy (10-fold cross-validation tests) across different models}\label{fig:tuned}
 \end{figure}
 
-The confusion matrix for the random forest classifier is presented in figure~\ref{fig:conf} as a sample. The accuracy is fairly high for the first 3 classes. The highest error is when the true label is `reflexive' and it gets classified as `coalescence'. More training data near this boundary can help boost the model accuracy further. This can possibly guide further experiments.
+
+A few comments and observations regarding the results:
+\begin{itemize}
+\item Even the simplest ML models provide a significant improvement over the current state of the art physics based models. This is mainly due to the low model complexity of the physics based models.
+\item Little difference in the accuracy in the two cases, with and without domain knowledge. This is consistent with our observations in Figures~\ref{fig:dt}--\ref{fig:nn}. The naive bayes classifier actually suffers with the additional features.
+\item The random forest classifier performs the best on this dataset. Although it is only marginally better than the much simpler decision tree and k-NN classifiers.
+\item This ensemble classifier does not boost the accuracy. An ensemble is expected to improve accuracy when the different classifiers exploit different aspects of the dataset.
+\end{itemize}
+
+
+The normalized confusion matrix, showing the predicted labels vs. the true lables, for the random forest classifier is presented in Figure~\ref{fig:conf} as a sample. The random forest classifier is picked because it has the highest accuracy. The accuracy is fairly high for the first 3 classes. The highest error is when the true label is `reflexive' and it gets classified as `coalescence'. More training data near this boundary can help boost the model accuracy further. This can possibly guide further experiments.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.4\textwidth]{../figures/conf_mat.png}
+	\includegraphics[width=0.6\textwidth]{../figures/conf_mat.png}
 	\caption{Confusion matrix for the random forest classifier.}
 	\label{fig:conf}
 \end{figure}
 
 \subsection{Why did domain knowledge not help?}
-A key question that arises from the experiments presented so far is why the domain knowledge in the form of the additional features did not help the performance of any of the models. To answer this we consider an experiment with increasing datasize. The two simple classifiers that perform well (fig. \ref{fig:tuned}), decision tree and k-NN, are considered. For both the classifiers we consider training with 5 features (dotted lines) and 8 features (solid lines). A few observations can be made:
-\begin{itemize}
-\item The accuracy has not saturated with respect to increasing number of data points. More data is expected to boost accuracy of our models further.
-\item For higher number of data points (beyond 2000) the domain knowledge does not help, but there is a small difference for small numbers of data points. This is highlighted in figure~\ref{fig:acc_vs_size_b}, where we zoom in on the relevant region.
-\item The improvement (albeit small) in performance by addition of the extra features suggests that when there is a small amount of training data the models are unable to search the entire hypothesis space. The addition of the relevant features allows a better accuracy even when the hypothesis space is not completely spanned.
-\item This improvement vanishes as the number of training data points increases because the models are able to better search the hypothesis space with additional data.
-\end{itemize}
+A key question that arises from the experiments presented so far is why the domain knowledge in the form of the additional features did not help the performance of any of the models. To answer this we consider an experiment with increasing size of the dataset. The two simple classifiers that perform well (see Figure~\ref{fig:tuned}), decision tree and k-NN, are considered for this test. For both the classifiers we consider training with 5 features (dotted lines) and 8 features (solid lines). 
+
 
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.475\textwidth}
         \includegraphics[width=\textwidth]{../figures/accuracy_vs_size.png}
-        \caption{Over the whole range}
+        \caption{Over the whole range of dataset sizes}
         \label{fig:acc_vs_size_a}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.475\textwidth}
         \includegraphics[width=\textwidth]{../figures/accuracy_vs_size2.png}
-        \caption{For small dataset sizes (zoomed in fig. \ref{fig:acc_vs_size_a})}
+        \caption{For small dataset sizes (zoomed into Figure~\ref{fig:acc_vs_size_a})}
         \label{fig:acc_vs_size_b}
     \end{subfigure}
-    \caption{Accuracy with different models as a function of number of data points.}\label{fig:acc_vs_size}
+    \caption{Model accuracy (10-fold cross-validation tests) with different models as a function of number of training data points.}\label{fig:acc_vs_size}
 \end{figure}
 
+
+A few observations can be made:
+\begin{itemize}
+\item The accuracy has not saturated with respect to increasing number of data points. More data is expected to boost accuracy of our models further.
+\item Domain knowledge does not help boost accuracy when the training dataset is large (2000+). However, for a smaller number of training data points, there is an improvement when domain knowledge is used. This is highlighted in Figure~\ref{fig:acc_vs_size_b}, where we zoom in on the relevant region.
+\subitem The improvement (albeit small) in performance by addition of the extra features suggests that when there is a small amount of training data the models are unable to search the entire hypothesis space. The addition of the relevant features allows a better accuracy even when the hypothesis space is not completely spanned.
+\subitem This improvement vanishes as the number of training data points increases because the models are able to better search the hypothesis space with additional data.
+\end{itemize}
+
+
 \subsection{Robustness to noise}
-A key metric to consider for the current application is the robustness to noise. As described in table~\ref{tab:data}, the training data has been extracted from different sources going as far back as 1990. Certain experimental errors (up to 10\%) have been reported in literature and some variations can be expected across the different datasets. Therefore, we must account for noise in our input data. To do this we run experiments where we add a varying degree of noise to the data.
+A key metric to consider for the current application is the robustness to noise. As described in Table~\ref{tab:data}, the training data has been extracted from different sources going as far back as 1990. Certain experimental errors (up to 10\%) have been reported in literature and some variations can be expected across the different datasets. Therefore, we must account for noise in our input data. To do this we run experiments where we add a varying degree of noise to the data.
 
 Gaussian noise is added to the scaled feature vectors. The noisy data is given as 
 \begin{equation}
 X(i, j) = X(i, j) + N(i, j),
 \end{equation}
-where $N \sim \mathcal{N}(0, n)$, $i$ is the instance index and $j$ is the feature number. The value of $n$ is represented on the x-axis in fig.~\ref{fig:noise}. Four different classifiers are compared here. Two key things emerge from this test:
-\begin{itemize}
-\item The decision tree classifier is the least robust to noise. There is a sharp drop in accuracy initially up to 5\% noise.
-\item The neural network classifier, while starting from a lowest accuracy is the most robust to input noise. The neural network performs even better than the random forest for high levels of noise.
-\end{itemize}
+where $N \sim \mathcal{N}(0, n)$, $i$ is the instance index and $j$ is the feature number. The value of $n$ is represented on the x-axis in Figure~\ref{fig:noise}. Four different classifiers are compared here, decision tree (DT), k-NN, neural network (NN) and random forests (RF). 
 
 \begin{figure}[h]
 	\centering
@@ -453,6 +461,12 @@ where $N \sim \mathcal{N}(0, n)$, $i$ is the instance index and $j$ is the featu
 	\caption{Accuracy of different classifiers as a function of noise in the data. The $n$ value denotes the standard deviation in the Gaussian noise. }
 	\label{fig:noise}
 \end{figure}
+
+Two key things emerge from this test:
+\begin{itemize}
+\item The decision tree classifier is the least robust to noise. There is a sharp drop in accuracy initially up to 5\% noise. The other 3 models are more robust to input noise.
+\item The neural network classifier, while starting from a lowest accuracy is the most robust to input noise. The neural network performs even better than the random forest for high levels of noise.
+\end{itemize}
 
 \section{Conclusions}
 
@@ -464,13 +478,9 @@ A major improvement is seen over the current state of the art physics based mode
 \end{itemize}
 The k-NN classifier performs decently well on all three criteria.
 
-In the confusion matrix (fig. \ref{fig:conf}) the highest error is seen when the true label is `reflexive' and it gets classified as `coalescence'. More training data near this boundary can help boost the model accuracy further.
+Furthermore, the model accuracy has not saturated with the current size of the training dataset (see Figure~\ref{fig:acc_vs_size}). In the confusion matrix (Figure~\ref{fig:conf}) the highest error is seen when the true label is `reflexive' and it gets classified as `coalescence'. More training data near this boundary can help boost the model accuracy further.
 
-This is a relevant problem for a lot of industries. This paper demonstrates that ML based classifiers can significantly improve predictions but apart from simply improving the model accuracy, this work can be leveraged further to provide insights into the fluid mechanics of the problem itself. The next step here would be to interpret these ML based models (mainly the decision tree) and try to gain insights about the dependence of the droplet collision phenomena on the different features.
-
-%Shuffling of data before generating cross validation data sets is important.
-
-
+Droplet collision remains a relevant fluid-dynamics problem for several industries (e.g., automotive, food processing). This paper demonstrates that ML based classifiers can significantly improve the prediction of droplet collision outcomes. Moreover, other than simply improving the model accuracy, this work can be leveraged to provide insights into the fluid mechanics of the problem itself. Interpreting the present ML based models, mainly the decision tree, can lead to further insights about the dependence of the droplet collision phenomena on the different features.
 
 \bibliography{ml_droplet_collision}
 \end{document}
